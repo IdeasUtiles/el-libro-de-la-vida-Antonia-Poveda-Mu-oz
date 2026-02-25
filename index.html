@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>El Libro de la Vida — Autoevaluación (V1)</title>
+  <title>El Libro de la Vida — Escenarios del Corazón (V1.1)</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -11,13 +11,13 @@
     <div class="brand">
       <div class="mark" aria-hidden="true">✦</div>
       <div class="brand-text">
-        <div class="title">Autoevaluación lúdica</div>
-        <div class="subtitle">Inspirada en <em>El Libro de la Vida</em> (uso privado)</div>
+        <div class="title">Escenarios del Corazón</div>
+        <div class="subtitle">Un juego conversado, inspirado en <em>El Libro de la Vida</em></div>
       </div>
     </div>
 
     <div class="top-actions">
-      <button class="ghost" id="btnHelp" type="button">Ayuda</button>
+      <button class="ghost" id="btnHelp" type="button">Cómo se juega</button>
       <button class="ghost" id="btnReset" type="button">Reiniciar</button>
     </div>
   </header>
@@ -26,18 +26,11 @@
     <section class="card hero" id="screenIntro">
       <div class="hero-grid">
         <div>
-          <h1>Vamos a jugar con 8 altares</h1>
+          <h1>Ocho altares, una obra distinta cada día</h1>
           <p class="lead">
-            Es un juego breve (12–15 min). Tú eliges opciones y escribes <strong>una frase</strong> cuando te apetezca.
-            Al final tendrás <strong>dos textos</strong>: uno para ti y otro para compartir con Sergio.
+            Aquí no vienes a “responder bien”. Vienes a <strong>contarte</strong>.
+            Sergio comparte pantalla, tú eliges opciones y, cuando te nazca, escribes <strong>una frase</strong>.
           </p>
-
-          <div class="pill-row">
-            <span class="pill">Sin diagnósticos</span>
-            <span class="pill">Sin etiquetas</span>
-            <span class="pill">Con pausa y continuar</span>
-            <span class="pill">Solo para sesión</span>
-          </div>
 
           <div class="form-grid">
             <label class="field">
@@ -53,6 +46,19 @@
                 <option value="alta">Alta</option>
               </select>
             </label>
+
+            <label class="field full">
+              <span>Modo</span>
+              <div class="toggle">
+                <input id="chkTheatre" type="checkbox" checked />
+                <label for="chkTheatre">
+                  <strong>Modo teatro</strong> (primero: “¿qué haría el personaje?” y luego: “¿y tú?”)
+                </label>
+              </div>
+              <div class="hint">
+                Si quieres ir más rápido, desactívalo (harás solo tus preguntas).
+              </div>
+            </label>
           </div>
 
           <div class="cta-row">
@@ -61,18 +67,18 @@
           </div>
 
           <p class="tiny">
-            Nota: Esto es una herramienta inspirada (fan) sin imágenes oficiales ni afiliación. No sustituye evaluación clínica.
+            Herramienta inspirada (sin arte oficial ni afiliación). Uso privado/terapéutico.
           </p>
         </div>
 
         <div class="poster" aria-hidden="true">
           <div class="poster-inner">
-            <div class="poster-title">Tu historia de hoy</div>
+            <div class="poster-title">Tu escena de hoy</div>
             <div class="poster-lines">
               <div class="line">• Elige un altar</div>
-              <div class="line">• Responde sin prisa</div>
-              <div class="line">• Usa una frase</div>
-              <div class="line">• Cierra con un “mensaje”</div>
+              <div class="line">• Juega con Manolo, María, Joaquín…</div>
+              <div class="line">• Y luego respóndete tú</div>
+              <div class="line">• Cierra con un mensaje para tu historia</div>
             </div>
             <div class="poster-badge">8</div>
           </div>
@@ -112,43 +118,40 @@
 
     <section class="card results" id="screenResults" style="display:none;">
       <div class="results-head">
-        <h2>Listo ✨</h2>
-        <p class="lead">Aquí tienes dos textos. Puedes <strong>copiarlos</strong> o <strong>descargar</strong> un archivo con tus respuestas.</p>
+        <h2>Se cerró el telón ✨</h2>
+        <p class="lead">
+          Esto no es una etiqueta ni un diagnóstico. Es un <strong>resumen con sentido</strong>,
+          usando valores de la historia (recuerdo, coraje, honestidad, cuidado, lealtad).
+        </p>
       </div>
 
-      <div class="tabs">
-        <button class="tab active" data-tab="her">Para ti</button>
-        <button class="tab" data-tab="sergio">Para Sergio</button>
-        <button class="tab" data-tab="data">Datos</button>
-      </div>
+      <div class="panel" id="panel-summary"></div>
 
-      <div class="tabpanels">
-        <div class="panel" id="panel-her"></div>
-        <div class="panel" id="panel-sergio" style="display:none;"></div>
-        <div class="panel" id="panel-data" style="display:none;"></div>
-      </div>
+      <details class="details">
+        <summary>Ver detalles (para Sergio / registro)</summary>
+        <div class="panel" id="panel-data"></div>
+      </details>
 
       <div class="results-actions">
-        <button class="secondary" id="btnCopy" type="button">Copiar pestaña</button>
+        <button class="secondary" id="btnCopy" type="button">Copiar resumen</button>
         <button class="secondary" id="btnDownload" type="button">Descargar JSON</button>
         <button class="primary" id="btnNew" type="button">Hacer otra vez</button>
       </div>
 
       <p class="tiny">
-        Sugerencia: si quieres, Sergio puede leer contigo solo el texto “Para ti” y guardar el otro para su registro.
+        Sugerencia: lee solo el resumen en voz alta y deja los detalles para después.
       </p>
     </section>
   </main>
 
-  <!-- Modal ayuda -->
   <dialog id="dlgHelp" class="dialog">
     <div class="dialog-inner">
-      <h3>Cómo jugar</h3>
+      <h3>Cómo se juega</h3>
       <ul>
-        <li>Esto no es un examen. Responde como te salga hoy.</li>
-        <li>Si una pregunta no te encaja, elige la opción “Depende / No sé”.</li>
-        <li>En algunas preguntas puedes escribir <strong>una frase</strong>. Con una sola basta.</li>
-        <li>Se guarda automáticamente en este navegador (para poder pausar y continuar).</li>
+        <li>Esto es una conversación con estructura, no un interrogatorio.</li>
+        <li>En <strong>Modo teatro</strong>: primero imaginas qué haría un personaje y luego respondes tú.</li>
+        <li>Cuando aparezca “una frase”, con una sola basta (o puedes dejarla en blanco).</li>
+        <li>Se guarda automáticamente en este navegador para poder pausar.</li>
       </ul>
       <div class="dialog-actions">
         <button class="primary" id="btnCloseHelp" type="button">Entendido</button>
@@ -156,11 +159,10 @@
     </div>
   </dialog>
 
-  <!-- Modal pausa -->
   <dialog id="dlgPause" class="dialog">
     <div class="dialog-inner">
       <h3>Pausa</h3>
-      <p>Se ha guardado tu avance. Puedes cerrar la ventana y continuar luego con el botón “Continuar donde lo dejé”.</p>
+      <p>Se ha guardado tu avance. Puedes cerrar y continuar luego con “Continuar donde lo dejé”.</p>
       <div class="dialog-actions">
         <button class="secondary" id="btnExitToIntro" type="button">Volver al inicio</button>
         <button class="primary" id="btnKeepGoing" type="button">Seguir</button>
@@ -169,7 +171,7 @@
   </dialog>
 
   <footer class="footer">
-    <div>Hecho para sesiones por videollamada (Sergio). Estilo inspirado, sin arte oficial.</div>
+    <div>Sesiones por videollamada · Medellín · Inspirado en una historia (sin arte oficial)</div>
   </footer>
 
   <script src="app.js"></script>
