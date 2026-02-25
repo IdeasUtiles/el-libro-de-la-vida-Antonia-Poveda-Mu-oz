@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>El Libro de la Vida — Escenarios del Corazón (V1.1)</title>
+  <title>Escenarios del Corazón — V1.2</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -15,7 +15,6 @@
         <div class="subtitle">Un juego conversado, inspirado en <em>El Libro de la Vida</em></div>
       </div>
     </div>
-
     <div class="top-actions">
       <button class="ghost" id="btnHelp" type="button">Cómo se juega</button>
       <button class="ghost" id="btnReset" type="button">Reiniciar</button>
@@ -26,11 +25,8 @@
     <section class="card hero" id="screenIntro">
       <div class="hero-grid">
         <div>
-          <h1>Ocho altares, una obra distinta cada día</h1>
-          <p class="lead">
-            Aquí no vienes a “responder bien”. Vienes a <strong>contarte</strong>.
-            Sergio comparte pantalla, tú eliges opciones y, cuando te nazca, escribes <strong>una frase</strong>.
-          </p>
+          <h1>Antonia: hoy jugamos a contar tu historia</h1>
+          <p class="lead" id="introPara"></p>
 
           <div class="form-grid">
             <label class="field">
@@ -51,13 +47,9 @@
               <span>Modo</span>
               <div class="toggle">
                 <input id="chkTheatre" type="checkbox" checked />
-                <label for="chkTheatre">
-                  <strong>Modo teatro</strong> (primero: “¿qué haría el personaje?” y luego: “¿y tú?”)
-                </label>
+                <label for="chkTheatre"><strong>Modo teatro</strong> (personaje → tú)</label>
               </div>
-              <div class="hint">
-                Si quieres ir más rápido, desactívalo (harás solo tus preguntas).
-              </div>
+              <div class="hint">Si quieres ir más rápido, desactívalo.</div>
             </label>
           </div>
 
@@ -66,9 +58,7 @@
             <button class="secondary" id="btnResume" type="button" style="display:none;">Continuar donde lo dejé</button>
           </div>
 
-          <p class="tiny">
-            Herramienta inspirada (sin arte oficial ni afiliación). Uso privado/terapéutico.
-          </p>
+          <p class="tiny">Herramienta inspirada (sin arte oficial ni afiliación). Uso privado/terapéutico.</p>
         </div>
 
         <div class="poster" aria-hidden="true">
@@ -76,9 +66,25 @@
             <div class="poster-title">Tu escena de hoy</div>
             <div class="poster-lines">
               <div class="line">• Elige un altar</div>
-              <div class="line">• Juega con Manolo, María, Joaquín…</div>
-              <div class="line">• Y luego respóndete tú</div>
-              <div class="line">• Cierra con un mensaje para tu historia</div>
+              <div class="line">• Entra a una mini-escena</div>
+              <div class="line">• Responde corto y real</div>
+              <div class="line">• Cierra con un mensaje</div>
+            </div>
+            <div class="poster-art" aria-hidden="true">
+              <svg viewBox="0 0 220 120" width="100%" height="100%">
+                <defs>
+                  <linearGradient id="g1" x1="0" x2="1">
+                    <stop offset="0" stop-color="rgba(255,91,214,0.9)"/>
+                    <stop offset="0.55" stop-color="rgba(247,201,72,0.9)"/>
+                    <stop offset="1" stop-color="rgba(83,213,253,0.9)"/>
+                  </linearGradient>
+                </defs>
+                <path d="M20,95 C45,40 70,30 95,62 C108,80 118,82 130,65 C150,38 175,38 200,88"
+                      fill="none" stroke="url(#g1)" stroke-width="7" stroke-linecap="round"/>
+                <circle cx="60" cy="45" r="9" fill="rgba(255,255,255,0.85)"/>
+                <circle cx="155" cy="48" r="7" fill="rgba(255,255,255,0.70)"/>
+                <circle cx="110" cy="30" r="5" fill="rgba(255,255,255,0.55)"/>
+              </svg>
             </div>
             <div class="poster-badge">8</div>
           </div>
@@ -111,7 +117,7 @@
         </div>
 
         <div class="kbd">
-          Atajos: <span class="kbdkey">1–4</span> elegir opción · <span class="kbdkey">Enter</span> siguiente · <span class="kbdkey">←</span> atrás
+          Atajos: <span class="kbdkey">1–4</span> elegir · <span class="kbdkey">Enter</span> siguiente · <span class="kbdkey">←</span> atrás
         </div>
       </div>
     </section>
@@ -119,10 +125,7 @@
     <section class="card results" id="screenResults" style="display:none;">
       <div class="results-head">
         <h2>Se cerró el telón ✨</h2>
-        <p class="lead">
-          Esto no es una etiqueta ni un diagnóstico. Es un <strong>resumen con sentido</strong>,
-          usando valores de la historia (recuerdo, coraje, honestidad, cuidado, lealtad).
-        </p>
+        <p class="lead">Un resumen con sentido, usando valores de la historia.</p>
       </div>
 
       <div class="panel" id="panel-summary"></div>
@@ -137,10 +140,6 @@
         <button class="secondary" id="btnDownload" type="button">Descargar JSON</button>
         <button class="primary" id="btnNew" type="button">Hacer otra vez</button>
       </div>
-
-      <p class="tiny">
-        Sugerencia: lee solo el resumen en voz alta y deja los detalles para después.
-      </p>
     </section>
   </main>
 
@@ -148,9 +147,9 @@
     <div class="dialog-inner">
       <h3>Cómo se juega</h3>
       <ul>
-        <li>Esto es una conversación con estructura, no un interrogatorio.</li>
-        <li>En <strong>Modo teatro</strong>: primero imaginas qué haría un personaje y luego respondes tú.</li>
-        <li>Cuando aparezca “una frase”, con una sola basta (o puedes dejarla en blanco).</li>
+        <li>Cada pregunta trae una <strong>mini-escena</strong> para que tenga sentido.</li>
+        <li>En <strong>Modo teatro</strong>: personaje → tú (así es más fácil hablar).</li>
+        <li>“Una frase” es opcional: con una sola basta.</li>
         <li>Se guarda automáticamente en este navegador para poder pausar.</li>
       </ul>
       <div class="dialog-actions">
@@ -162,7 +161,7 @@
   <dialog id="dlgPause" class="dialog">
     <div class="dialog-inner">
       <h3>Pausa</h3>
-      <p>Se ha guardado tu avance. Puedes cerrar y continuar luego con “Continuar donde lo dejé”.</p>
+      <p>Se ha guardado tu avance. Puedes cerrar y continuar luego.</p>
       <div class="dialog-actions">
         <button class="secondary" id="btnExitToIntro" type="button">Volver al inicio</button>
         <button class="primary" id="btnKeepGoing" type="button">Seguir</button>
