@@ -3,21 +3,21 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Escenarios del Corazón — V1.2</title>
+  <title>Escenarios del Corazón — V1.3</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
+<body class="world-intro">
   <header class="topbar">
     <div class="brand">
       <div class="mark" aria-hidden="true">✦</div>
       <div class="brand-text">
         <div class="title">Escenarios del Corazón</div>
-        <div class="subtitle">Un juego conversado, inspirado en <em>El Libro de la Vida</em></div>
+        <div class="subtitle">Juego inspirado en <em>El Libro de la Vida</em></div>
       </div>
     </div>
     <div class="top-actions">
       <button class="ghost" id="btnHelp" type="button">Cómo se juega</button>
-      <button class="ghost" id="btnReset" type="button">Reiniciar</button>
+      <button class="ghost" id="btnReset" type="button" title="Borra el progreso guardado">Reiniciar</button>
     </div>
   </header>
 
@@ -27,6 +27,14 @@
         <div>
           <h1>Antonia: hoy jugamos a contar tu historia</h1>
           <p class="lead" id="introPara"></p>
+
+          <div class="notice">
+            <div class="notice-title">Ojo con dos cosas</div>
+            <ul>
+              <li><strong>Reiniciar</strong> borra las respuestas guardadas en este navegador.</li>
+              <li>Para avanzar, hay que <strong>elegir una opción</strong> en cada pregunta.</li>
+            </ul>
+          </div>
 
           <div class="form-grid">
             <label class="field">
@@ -58,16 +66,16 @@
             <button class="secondary" id="btnResume" type="button" style="display:none;">Continuar donde lo dejé</button>
           </div>
 
-          <p class="tiny">Herramienta inspirada (sin arte oficial ni afiliación). Uso privado/terapéutico.</p>
+          <p class="tiny">Inspirado en <em>El Libro de la Vida</em>. Uso personal/terapéutico.</p>
         </div>
 
         <div class="poster" aria-hidden="true">
           <div class="poster-inner">
-            <div class="poster-title">Tu escena de hoy</div>
+            <div class="poster-title">Ocho altares = ocho mundos</div>
             <div class="poster-lines">
-              <div class="line">• Elige un altar</div>
               <div class="line">• Entra a una mini-escena</div>
-              <div class="line">• Responde corto y real</div>
+              <div class="line">• Responde con una opción</div>
+              <div class="line">• Si quieres, escribe una frase</div>
               <div class="line">• Cierra con un mensaje</div>
             </div>
             <div class="poster-art" aria-hidden="true">
@@ -147,8 +155,8 @@
     <div class="dialog-inner">
       <h3>Cómo se juega</h3>
       <ul>
-        <li>Cada pregunta trae una <strong>mini-escena</strong> para que tenga sentido.</li>
-        <li>En <strong>Modo teatro</strong>: personaje → tú (así es más fácil hablar).</li>
+        <li>Cada pregunta trae una <strong>mini-escena</strong>.</li>
+        <li>En <strong>Modo teatro</strong>: personaje → tú.</li>
         <li>“Una frase” es opcional: con una sola basta.</li>
         <li>Se guarda automáticamente en este navegador para poder pausar.</li>
       </ul>
@@ -170,7 +178,7 @@
   </dialog>
 
   <footer class="footer">
-    <div>Sesiones por videollamada · Medellín · Inspirado en una historia (sin arte oficial)</div>
+    <div><strong>USO RESTRINGIDO.</strong> Creado bajo inspiración del psicólogo Sergio Montoya Chica. Prohibido compartir sin autorización.</div>
   </footer>
 
   <script src="app.js"></script>
