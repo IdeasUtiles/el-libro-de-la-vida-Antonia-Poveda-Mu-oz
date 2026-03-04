@@ -9,9 +9,10 @@ const qTitle=$("#qTitle"), qCounter=$("#qCounter"), qBody=$("#qBody"), altarChip
 const progressFill=$("#progressFill"), progressText=$("#progressText");
 const btnBack=$("#btnBack"), btnNext=$("#btnNext"), btnPause=$("#btnPause");
 const btnCloseHelp=$("#btnCloseHelp"), btnExitToIntro=$("#btnExitToIntro"), btnKeepGoing=$("#btnKeepGoing");
-const panelSummary=$("#panel-summary"), /*panelData_removed*/=$("#panel-data");
-const btnCopy=$("#btnCopy"), btnDownload=$("#btnDownload"), btnNew=$("#btnNew");
+const panelSummary=$("#panel-summary");
 let LAST_JSON_RAW = "";
+
+const btnCopy=$("#btnCopy"), btnDownload=$("#btnDownload"), btnNew=$("#btnNew");
 
 const NAMES={girl:"Antonia",bestFriend:"Julieta",friends:["Matías","David"],mom:"Laura",dad:"Ricardo",city:"Medellín",school:"Pedro Justo Berrío"};
 
@@ -359,6 +360,7 @@ function complete(){
   state.meta.completedAt=new Date().toISOString();
   saveState(); showScreen("results"); setWorld("intro");
   const {summaryHtml,dataHtml,dataObj}=summarize();
+  LAST_JSON_RAW = JSON.stringify(dataObj, null, 2);
   panelSummary.innerHTML=summaryHtml;
 panelSummary.dataset.raw=stripHtml(summaryHtml);
 }
@@ -401,7 +403,7 @@ btnDownload.addEventListener("click",()=>{
   const url=URL.createObjectURL(blob);
   const a=document.createElement("a"); a.href=url;
   const safe=(state.meta.name||"respuestas").replaceAll(/[^a-zA-Z0-9_-]+/g,"_");
-  a.download=`escenarios_v13_${safe}_${new Date().toISOString().slice(0,10)}.json`;
+  a.download=`escenarios_v14_1_${safe}_${new Date().toISOString().slice(0,10)}.json`;
   document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
 });
 btnNew.addEventListener("click",()=>{clearState();state=defaultState();btnResume.style.display="none";showScreen("intro");setWorld("intro");});
