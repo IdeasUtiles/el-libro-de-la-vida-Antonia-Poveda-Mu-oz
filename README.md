@@ -1,11 +1,6 @@
-# Escenarios del Corazón — V1.3
+# Escenarios del Corazón — V1.4
 
-Incluye:
-- Mención explícita a *El Libro de la Vida* en la pantalla inicial.
-- Se usa el nombre **La Catrina**.
-- Cada altar tiene su propio “mundo” visual (patrones y paletas; no usa arte oficial).
-- Footer disuasorio (no tapa botones).
-- Aviso en inicio: Reiniciar borra respuestas; hay que elegir opción para avanzar.
-- Revisión de coherencia: se corrigieron los contextos señalados (plan, “esto”, mamá/papá, tensión, redes sociales, etc.).
-
-Archivos: index.html, styles.css, app.js
+Ajustes:
+- Se eliminaron los patrones/rayas del fondo (para lectura más limpia en móvil/web).
+- Se eliminó “Ver detalles para Sergio” (solo queda Descargar JSON).
+- El resumen final se remaquetó en formato esquemático, agrupado por altares, para lectura clara.

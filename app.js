@@ -9,8 +9,9 @@ const qTitle=$("#qTitle"), qCounter=$("#qCounter"), qBody=$("#qBody"), altarChip
 const progressFill=$("#progressFill"), progressText=$("#progressText");
 const btnBack=$("#btnBack"), btnNext=$("#btnNext"), btnPause=$("#btnPause");
 const btnCloseHelp=$("#btnCloseHelp"), btnExitToIntro=$("#btnExitToIntro"), btnKeepGoing=$("#btnKeepGoing");
-const panelSummary=$("#panel-summary"), panelData=$("#panel-data");
+const panelSummary=$("#panel-summary"), /*panelData_removed*/=$("#panel-data");
 const btnCopy=$("#btnCopy"), btnDownload=$("#btnDownload"), btnNew=$("#btnNew");
+let LAST_JSON_RAW = "";
 
 const NAMES={girl:"Antonia",bestFriend:"Julieta",friends:["Matías","David"],mom:"Laura",dad:"Ricardo",city:"Medellín",school:"Pedro Justo Berrío"};
 
@@ -291,29 +292,66 @@ function buildValueInference(){
 function summarize(){
   const who=(state.meta.name||"").trim()||NAMES.girl;
   const dateStr=new Date().toLocaleDateString("es-CO",{year:"numeric",month:"long",day:"numeric"});
-  const echoLines=[], phraseLines=[];
+
+  // Group answers (only "Tú")
+  const groups = new Map(); // altarName -> {dot, guide, items:[]}
   for(const q of FLOW){
     if(q.isReference) continue;
-    const a=state.answers[q.id]; if(!a?.value) continue;
-    if(echoLines.length<12) echoLines.push(`• ${q.prompt} → ${a.value}`);
-    if(a.phrase && phraseLines.length<10) phraseLines.push(`• ${q.prompt} — “${a.phrase.trim()}”`);
+    const a = state.answers[q.id];
+    if(!a?.value) continue;
+    if(!groups.has(q.altarName)){
+      groups.set(q.altarName, { dot: q.dot, guide: q.guide, items: [] });
+    }
+    groups.get(q.altarName).items.push({
+      prompt: q.prompt,
+      value: a.value,
+      phrase: (a.phrase||"").trim()
+    });
   }
+
   const inf=buildValueInference();
+
+  const sections = [];
+  for(const [altarName, g] of groups.entries()){
+    const itemsHtml = g.items.map(it => {
+      const phrase = it.phrase ? `<div class="sum-phrase">“${escapeHtml(it.phrase)}”</div>` : "";
+      return `<li><div class="sum-q">${escapeHtml(it.prompt)}</div><div class="sum-a">${escapeHtml(it.value)}</div>${phrase}</li>`;
+    }).join("");
+    sections.push(`
+      <div class="sum-block">
+        <div class="sum-head">
+          <span class="altar-dot" style="background:${g.dot}"></span>
+          <div>
+            <div class="sum-title">${escapeHtml(altarName)}</div>
+            <div class="sum-sub">Guía: ${escapeHtml(g.guide)}</div>
+          </div>
+        </div>
+        <ul class="sum-list">${itemsHtml}</ul>
+      </div>
+    `);
+  }
+
   const summaryHtml = `
     <h3>Resumen para ${escapeHtml(who)}</h3>
     <p><strong>${escapeHtml(dateStr)}</strong> · ${escapeHtml(NAMES.city)}</p>
-    <p>Hoy hiciste algo valiente: <strong>poner palabras</strong> (aunque sean pocas) a lo que te pasa.</p>
-    <h3>Lo que se ve en tus respuestas</h3>
-    <p class="mono">${escapeHtml(echoLines.join("\\n"))}</p>
-    ${phraseLines.length?`<h3>Tus frases</h3><p class="mono">${escapeHtml(phraseLines.join("\\n"))}</p>`:""}
-    <h3>Lo que tu historia sugiere hoy (sin etiqueta, con sentido)</h3>
-    <p><strong>${escapeHtml(inf.headline)}</strong></p>
-    <ul>${inf.bullets.map(b=>`<li>${escapeHtml(b)}</li>`).join("")}</ul>
-    <h3>Un gesto para esta semana</h3>
-    <p>${escapeHtml(inf.nextStep)}</p>
+
+    <div class="sum-callout">
+      <div><strong>Idea principal de hoy</strong></div>
+      <div class="sum-small"><strong>${escapeHtml(inf.headline)}</strong></div>
+      <ul>
+        ${inf.bullets.map(b=>`<li>${escapeHtml(b)}</li>`).join("")}
+      </ul>
+      <div class="sum-small"><strong>Un gesto para esta semana:</strong> ${escapeHtml(inf.nextStep)}</div>
+    </div>
+
+    <h3>Tus respuestas (por altares)</h3>
+    <div class="sum-grid">
+      ${sections.join("")}
+    </div>
   `;
+
   const dataObj={meta:state.meta,completedAt:state.meta.completedAt,flowLength:FLOW.length,answers:state.answers};
-  const dataHtml=`<h3>Datos (registro)</h3><pre class="mono" style="white-space:pre-wrap; overflow:auto;">${escapeHtml(JSON.stringify(dataObj,null,2))}</pre>`;
+  const dataHtml=""; // ya no se muestra en pantalla
   return {summaryHtml,dataHtml,dataObj};
 }
 
@@ -321,9 +359,8 @@ function complete(){
   state.meta.completedAt=new Date().toISOString();
   saveState(); showScreen("results"); setWorld("intro");
   const {summaryHtml,dataHtml,dataObj}=summarize();
-  panelSummary.innerHTML=summaryHtml; panelData.innerHTML=dataHtml;
-  panelSummary.dataset.raw=stripHtml(summaryHtml);
-  panelData.dataset.raw=JSON.stringify(dataObj,null,2);
+  panelSummary.innerHTML=summaryHtml;
+panelSummary.dataset.raw=stripHtml(summaryHtml);
 }
 
 function startFresh(){
@@ -359,7 +396,7 @@ btnCopy.addEventListener("click", async ()=>{
   catch{alert("No pude copiar automáticamente. Puedes seleccionar el texto manualmente.");}
 });
 btnDownload.addEventListener("click",()=>{
-  const raw=panelData.dataset.raw||"";
+  const raw = LAST_JSON_RAW || "";
   const blob=new Blob([raw],{type:"application/json"});
   const url=URL.createObjectURL(blob);
   const a=document.createElement("a"); a.href=url;
